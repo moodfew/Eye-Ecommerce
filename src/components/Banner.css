@@ -1,0 +1,23 @@
+/* ImageCarousel.css */
+
+.carousel-img {
+  height: 50vh; /* Default height for medium screens */
+}
+
+@media (min-width: 640px) {
+  .carousel-img {
+    height: 60vh; /* Height for small screens and up */
+  }
+}
+
+@media (min-width: 768px) {
+  .carousel-img {
+    height: 70vh; /* Height for medium screens and up */
+  }
+}
+
+@media (min-width: 1024px) {
+  .carousel-img {
+    height: 80vh; /* Height for large screens and up */
+  }
+}
