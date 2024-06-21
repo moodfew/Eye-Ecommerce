@@ -2,11 +2,14 @@
 import express from "express";
 import pg from "pg";
 import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 const port = process.env.SERVER_PORT || 3000;
+
+app.use(cors());
 
 const db = new pg.Client({
   user: process.env.USER,
@@ -20,7 +23,7 @@ db.connect();
 
 async function getMen() {
   try {
-    const res = await db.query("SELECT * FROM men");
+    const res = await db.query("SELECT * FROM men ORDER BY id");
     return res.rows;
   } catch (err) {
     console.error("Error executing query", err.stack);
