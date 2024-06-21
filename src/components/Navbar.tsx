@@ -1,4 +1,5 @@
 import { FaShoppingCart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
@@ -6,26 +7,26 @@ function Navbar() {
       <nav className="bg-white shadow-md">
         <div className="container px-4 py-4 flex justify-between items-center mx-auto">
           <div className="text-2xl font-bold">
-            <a href="/">E-store</a>
+            <Link to="/">E-store</Link>
           </div>
           <div className="hidden md:flex space-x-6">
-            <a href="/" className="text-gray-600 hover:text-gray-900">
+            <Link to="/" className="text-gray-600 hover:text-gray-900">
               Home
-            </a>
-            <a href="/shop" className="text-gray-600 hover:text-gray-900">
+            </Link>
+            <Link to="/shop" className="text-gray-600 hover:text-gray-900">
               Shop
-            </a>
-            <a href="/about" className="text-gray-600 hover:text-gray-900">
+            </Link>
+            <Link to="/about" className="text-gray-600 hover:text-gray-900">
               About
-            </a>
-            <a href="/contact" className="text-gray-600 hover:text-gray-900">
+            </Link>
+            <Link to="/contact" className="text-gray-600 hover:text-gray-900">
               Contact
-            </a>
+            </Link>
           </div>
           <div className="cart space-x-4">
-            <a href="/cart" className="text-gray-600 hover:text-gray-900">
+            <Link to="/cart" className="text-gray-600 hover:text-gray-900">
               <FaShoppingCart size={24} />
-            </a>
+            </Link>
           </div>
           <div className="md:hidden">
             <button className="text-gray-600 focus:outline-none focus:text-gray-900">
