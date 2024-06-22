@@ -3,6 +3,9 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import Navbar from "./Navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FaHeart } from "react-icons/fa";
 
 interface ClothingItem {
   id: number;
@@ -21,6 +24,9 @@ function Shop(props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedItem, setSelectedItem] = useState<ClothingItem | null>(null);
+  const [likedItems, setLikedItems] = useState<Record<number, boolean>>({});
+
+  const notify = () => toast("Item added to cart");
 
   useEffect(() => {
     const fetchMenClothing = async () => {
@@ -47,10 +53,18 @@ function Shop(props) {
     setSelectedItem(null);
   };
 
+  const handleHeartClick = (itemId: number) => {
+    setLikedItems((prevLikedItems) => ({
+      ...prevLikedItems,
+      [itemId]: !prevLikedItems[itemId],
+    }));
+  };
+
   return (
     <>
       <Navbar />
       <div className="mx-auto h-full flex w-full justify-center items-center m-10 p-2 px-12 py-8">
+        <ToastContainer />
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {menClothing.map((clothing) => {
             return (
@@ -58,8 +72,18 @@ function Shop(props) {
                 key={clothing.id}
                 className="relative bg-white border rounded-lg shadow-md dark:border-gray-700 transform transition duration-500 hover:scale-105"
               >
-                <div className="absolute top-3 right-3 rounded-full bg-violet-600 text-gray-200 w-6 h-6 text-center">
-                  {clothing.id}
+                <div className="absolute top-3 right-3 rounded-full w-6 h-6 text-center">
+                  <button
+                    onClick={() => {
+                      props.shopFavorite(clothing);
+                      handleHeartClick(clothing.id);
+                    }}
+                    className={
+                      likedItems[clothing.id] ? "text-red-600" : "text-gray-600"
+                    }
+                  >
+                    <FaHeart />
+                  </button>
                 </div>
                 <div className="p-3 flex justify-center">
                   <a href="#">
@@ -99,6 +123,7 @@ function Shop(props) {
                         className="my-2 font-semibold rounded-md p-2 bg-blue-200 hover:bg-blue-300"
                         onClick={() => {
                           props.favorite(clothing);
+                          notify();
                         }}
                       >
                         Add to Cart
