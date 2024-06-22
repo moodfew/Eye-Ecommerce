@@ -1,6 +1,6 @@
-import React from "react";
 import Navbar from "./Navbar";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ClothingItem {
   id: number;
@@ -20,6 +20,7 @@ interface CartProps {
 
 function Cart({ favorites }: CartProps) {
   const [selectedItem, setSelectedItem] = useState<ClothingItem | null>(null);
+  const navigate = useNavigate();
 
   const handleBuyNowClick = (item: ClothingItem) => {
     setSelectedItem(item);
@@ -27,6 +28,12 @@ function Cart({ favorites }: CartProps) {
 
   const handleCloseModal = () => {
     setSelectedItem(null);
+  };
+
+  const handleProceedToCheckout = () => {
+    if (selectedItem) {
+      navigate("/checkout", { state: { item: selectedItem } });
+    }
   };
 
   return (
@@ -105,7 +112,10 @@ function Cart({ favorites }: CartProps) {
                 <h3 className="text-lg font-bold mb-6">
                   ${selectedItem.price}
                 </h3>
-                <button className="w-full bg-blue-500 text-white font-semibold py-3 px-6 rounded hover:bg-blue-600">
+                <button
+                  className="w-full bg-blue-500 text-white font-semibold py-3 px-6 rounded hover:bg-blue-600"
+                  onClick={handleProceedToCheckout}
+                >
                   Proceed to Checkout
                 </button>
               </div>

@@ -1,11 +1,10 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import Navbar from "./Navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaHeart } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 interface ClothingItem {
   id: number;
@@ -26,6 +25,7 @@ function Shop(props) {
   const [selectedItem, setSelectedItem] = useState<ClothingItem | null>(null);
   const [likedItems, setLikedItems] = useState<Record<number, boolean>>([]);
   const [currentCategory, setCurrentCategory] = useState("men");
+  const navigate = useNavigate();
 
   const notify = () => toast("Item added to cart");
 
@@ -68,6 +68,12 @@ function Shop(props) {
 
   const toggleCategory = (category: string) => {
     setCurrentCategory(category);
+  };
+
+  const handleProceedToCheckout = () => {
+    if (selectedItem) {
+      navigate("/checkout", { state: { item: selectedItem } });
+    }
   };
 
   return (
@@ -190,7 +196,10 @@ function Shop(props) {
                 <h3 className="text-lg font-bold mb-6">
                   ${selectedItem.price}
                 </h3>
-                <button className="w-full bg-blue-500 text-white font-semibold py-3 px-6 rounded hover:bg-blue-600">
+                <button
+                  className="w-full bg-blue-500 text-white font-semibold py-3 px-6 rounded hover:bg-blue-600"
+                  onClick={handleProceedToCheckout}
+                >
                   Proceed to Checkout
                 </button>
               </div>
