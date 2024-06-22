@@ -1,8 +1,6 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import React from "react";
 import Navbar from "./Navbar";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 
 interface ClothingItem {
   id: number;
@@ -16,28 +14,12 @@ interface ClothingItem {
   reviews: string;
 }
 
-function Shop(props) {
-  const [menClothing, setManClothing] = useState<ClothingItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+interface CartProps {
+  favorites: ClothingItem[];
+}
+
+function Cart({ favorites }: CartProps) {
   const [selectedItem, setSelectedItem] = useState<ClothingItem | null>(null);
-
-  useEffect(() => {
-    const fetchMenClothing = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/men");
-        setManClothing(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError("Failed to fetch men clothing");
-        setLoading(false);
-      }
-    };
-    fetchMenClothing();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
 
   const handleBuyNowClick = (item: ClothingItem) => {
     setSelectedItem(item);
@@ -52,7 +34,7 @@ function Shop(props) {
       <Navbar />
       <div className="mx-auto h-full flex w-full justify-center items-center m-10 p-2 px-12 py-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {menClothing.map((clothing) => {
+          {favorites.map((clothing) => {
             return (
               <div
                 key={clothing.id}
@@ -95,14 +77,6 @@ function Shop(props) {
                       >
                         Buy Now
                       </button>
-                      <button
-                        className="my-2 font-semibold rounded-md p-2 bg-blue-200 hover:bg-blue-300"
-                        onClick={() => {
-                          props.favorite(clothing);
-                        }}
-                      >
-                        Add to Cart
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -111,7 +85,6 @@ function Shop(props) {
           })}
         </div>
       </div>
-
       {selectedItem && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white mb-10 rounded-lg shadow-lg p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
@@ -152,4 +125,4 @@ function Shop(props) {
   );
 }
 
-export default Shop;
+export default Cart;
