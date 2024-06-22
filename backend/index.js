@@ -31,12 +31,32 @@ async function getMen() {
   }
 }
 
+async function getAccessories() {
+  try {
+    const res = await db.query("SELECT * FROM accessories ORDER BY id");
+    return res.rows;
+  } catch (err) {
+    console.log("Error executing query", err.stack);
+    return [];
+  }
+}
+
 app.get("/men", async (req, res) => {
   try {
     const men = await getMen();
     res.json(men);
   } catch (error) {
     console.error("Error handling /men request", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.get("/accessories", async (req, res) => {
+  try {
+    const accessories = await getAccessories();
+    res.json(accessories);
+  } catch (error) {
+    console.error("Error handling /accessories request", error);
     res.status(500).send("Internal Server Error");
   }
 });

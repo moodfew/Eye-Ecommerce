@@ -10,17 +10,7 @@ CREATE TABLE men (
 	stock_quantity INT
 );
 
--- CREATE TABLE men (
--- 	id SERIAL PRIMARY KEY,
--- 	name VARCHAR(55) NOT NULL,
--- 	description TEXT,
--- 	price REAL NOT NULL,
--- 	category VARCHAR(55),
--- 	image_url TEXT NOT NULL,
--- 	rating INT NOT NULL,
--- 	reviews INT,
--- 	stock_quantity INT
--- );
+
 
 INSERT INTO men (name, description, price, category, image_url, rating, stock_quantity)
 VALUES
@@ -54,3 +44,41 @@ VALUES
 49.99, 'men', '/public/menClothing/whiteMan.jpg', 5, 17),
 ('Black Sneakers', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus velit augue, molestie a sollicitudin bibendum, bibendum nec velit.',
 79.97, 'men', '/public/menClothing/asianMan.jpg', 5, 5)
+
+
+CREATE TABLE accessories (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(55) NOT NULL,
+	description TEXT,
+	price REAL NOT NULL,
+	category VARCHAR(55),
+	image_url TEXT NOT NULL,
+	rating INT NOT NULL,
+	reviews INT,
+	stock_quantity INT
+);
+
+INSERT INTO accessories (name, description, price, category, image_url, rating, stock_quantity)
+VALUES
+('Fedora Blue', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus velit augue, molestie a sollicitudin bibendum, bibendum nec velit.',
+19.99, 'men', '/public/menAccessories/FedoraBlue.jpg', 5, 10),
+('Fedora Brown', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus velit augue, molestie a sollicitudin bibendum, bibendum nec velit.',
+29.98, 'men', '/public/menAccessories/FedoraBrown.jpg', 5, 16),
+('Fedora Black Curved', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus velit augue, molestie a sollicitudin bibendum, bibendum nec velit.',
+37.97, 'men', '/public/menAccessories/FedoraCurvedBlack.jpg', 5, 12),
+('Fedora Blue Curved', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus velit augue, molestie a sollicitudin bibendum, bibendum nec velit.',
+42.91, 'men', '/public/menAccessories/FedoraCruvedBlue.jpg', 5, 21),
+('Fedora Red Curved', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus velit augue, molestie a sollicitudin bibendum, bibendum nec velit.',
+31.12, 'men', '/public/menAccessories/FedoraCurvedRed.jpg', 5, 20),
+('Fedora Vintage Curved', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus velit augue, molestie a sollicitudin bibendum, bibendum nec velit.',
+12.77, 'men', '/public/menAccessories/FedoraCurvedVintage.jpg', 5, 34),
+('Fedora Cyan', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus velit augue, molestie a sollicitudin bibendum, bibendum nec velit.',
+49.97, 'men', '/public/menAccessories/FedoraCyan.jpg', 5, 11),
+('Fedora Lime', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus velit augue, molestie a sollicitudin bibendum, bibendum nec velit.',
+20, 'men', '/public/menAccessories/FedoraLime.jpg', 5, 15),
+('Fedora Pink', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus velit augue, molestie a sollicitudin bibendum, bibendum nec velit.',
+59.98, 'men', '/public/menAccessories/FedoraPink.jpg', 5, 8),
+('Fedora Red', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus velit augue, molestie a sollicitudin bibendum, bibendum nec velit.',
+69.69, 'men', '/public/menAccessories/FedoraRed.jpg.jpg', 5, 14),
+('Fedora White', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus velit augue, molestie a sollicitudin bibendum, bibendum nec velit.',
+21, 'men', '/public/menAccessories/FedoraWhite.jpg', 5, 30)
