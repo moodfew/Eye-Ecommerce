@@ -1,6 +1,13 @@
 import "./Banner.css"; // Create this file for custom styles
+import { useNavigate } from "react-router-dom";
 
 const Banner = () => {
+  const navigate = useNavigate();
+
+  const handleNavigate = (category: string) => {
+    navigate(`/shop?category=${category}`);
+  };
+
   const mainImage =
     "https://images.unsplash.com/photo-1479064555552-3ef4979f8908?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   const menImage =
@@ -24,12 +31,14 @@ const Banner = () => {
           <p className="text-md md:text-xl mb-8 text-center">
             Your one-stop shop for all things awesome.
           </p>
-          <a
-            href="/shop"
+          <button
             className="px-6 py-2 bg-orange-300 text-md font-semibold rounded hover:bg-orange-400 transition"
+            onClick={() => {
+              handleNavigate("men");
+            }}
           >
             Shop Now
-          </a>
+          </button>
         </div>
       </div>
 
@@ -45,12 +54,14 @@ const Banner = () => {
             <h2 className="text-xl md:text-2xl font-bold mb-2 text-center">
               Men's Collection
             </h2>
-            <a
-              href="/men"
+            <button
               className="px-4 py-2 bg-orange-300 text-sm font-semibold rounded hover:bg-orange-400 transition"
+              onClick={() => {
+                handleNavigate("men");
+              }}
             >
               Shop Men
-            </a>
+            </button>
           </div>
         </div>
         <div className="relative rounded-lg overflow-hidden shadow-lg">
@@ -63,12 +74,14 @@ const Banner = () => {
             <h2 className="text-xl md:text-2xl font-bold mb-2 text-center">
               Accessories
             </h2>
-            <a
-              href="/accessories"
+            <button
               className="px-4 py-2 bg-orange-300 text-sm font-semibold rounded hover:bg-orange-400 transition"
+              onClick={() => {
+                handleNavigate("accessories");
+              }}
             >
               Shop Accessories
-            </a>
+            </button>
           </div>
         </div>
       </div>

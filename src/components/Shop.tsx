@@ -4,7 +4,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaHeart } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface ClothingItem {
   id: number;
@@ -24,7 +24,15 @@ function Shop(props) {
   const [error, setError] = useState("");
   const [selectedItem, setSelectedItem] = useState<ClothingItem | null>(null);
   const [likedItems, setLikedItems] = useState<Record<number, boolean>>([]);
-  const [currentCategory, setCurrentCategory] = useState("men");
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  console.log(searchParams);
+  const category = searchParams.get("category") || "men";
+  console.log(category);
+
+  const [currentCategory, setCurrentCategory] = useState(category);
+
   const navigate = useNavigate();
 
   const notify = () => toast("Item added to cart");
