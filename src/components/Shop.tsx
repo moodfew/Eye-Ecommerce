@@ -20,27 +20,33 @@ interface ClothingItem {
 }
 
 function Shop(props) {
-  const [menClothing, setManClothing] = useState<ClothingItem[]>([]);
+  const [clothingItems, setClothingItems] = useState<ClothingItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedItem, setSelectedItem] = useState<ClothingItem | null>(null);
-  const [likedItems, setLikedItems] = useState<Record<number, boolean>>({});
+  const [likedItems, setLikedItems] = useState<Record<number, boolean>>([]);
+  const [currentCategory, setCurrentCategory] = useState("men");
 
   const notify = () => toast("Item added to cart");
 
   useEffect(() => {
-    const fetchMenClothing = async () => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError("");
+
       try {
-        const response = await axios.get("http://localhost:3000/men");
-        setManClothing(response.data);
+        const response = await axios.get(
+          `http://localhost:3000/${currentCategory}`
+        );
+        setClothingItems(response.data);
         setLoading(false);
       } catch (err) {
-        setError("Failed to fetch men clothing");
+        setError(`Failed to fetch ${currentCategory} clothing`);
         setLoading(false);
       }
     };
-    fetchMenClothing();
-  }, []);
+    fetchData();
+  }, [currentCategory]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
@@ -60,13 +66,40 @@ function Shop(props) {
     }));
   };
 
+  const toggleCategory = (category: string) => {
+    setCurrentCategory(category);
+  };
+
   return (
     <>
       <Navbar />
+      <div className="flex justify-center mx-auto w-full m-10">
+        <button
+          className={`mx-2 px-4 py-2 rounded ${
+            currentCategory === "men"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-300 text-gray-700"
+          }`}
+          onClick={() => toggleCategory("men")}
+        >
+          Men
+        </button>
+        <button
+          className={`mx-2 px-4 py-2 rounded ${
+            currentCategory === "accessories"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-300 text-gray-700"
+          }`}
+          onClick={() => toggleCategory("accessories")}
+        >
+          Accessories
+        </button>
+      </div>
       <div className="mx-auto h-full flex w-full justify-center items-center m-10 p-2 px-12 py-8">
-        <ToastContainer />
+        <ToastContainer hideProgressBar={true} autoClose={1600} />
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {menClothing.map((clothing) => {
+          {clothingItems.map((clothing) => {
             return (
               <div
                 key={clothing.id}
