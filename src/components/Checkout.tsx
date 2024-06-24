@@ -59,7 +59,7 @@ function Checkout() {
             >
               <div className="flex flex-col rounded-lg bg-white sm:flex-row">
                 <img
-                  className="m-2 h-24 w-30 rounded-md border object-cover object-center"
+                  className="m-2 h-34 w-30 rounded-md border object-cover object-center"
                   src={item.image_url}
                   alt=""
                 />
@@ -248,8 +248,8 @@ function Checkout() {
             >
               Billing Address
             </label>
-            <div className="flex flex-col sm:flex-row">
-              <div className="relative flex-shrink-0 sm:w-7/12">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="relative flex-shrink-0 sm:w-7/12 ">
                 <input
                   type="text"
                   id="billing-address"

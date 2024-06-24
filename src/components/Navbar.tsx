@@ -1,7 +1,14 @@
+import { useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 function Navbar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
     <div>
       <nav className="bg-white shadow-md">
@@ -29,7 +36,10 @@ function Navbar() {
             </Link>
           </div>
           <div className="md:hidden">
-            <button className="text-gray-600 focus:outline-none focus:text-gray-900">
+            <button
+              onClick={toggleMobileMenu}
+              className="text-gray-600 focus:outline-none focus:text-gray-900"
+            >
               <svg
                 className="h-6 w-6"
                 fill="none"
@@ -46,6 +56,24 @@ function Navbar() {
             </button>
           </div>
         </div>
+        {isMobileMenuOpen && (
+          <div className="md:hidden">
+            <div className="flex flex-col space-y-2 px-4 pb-4">
+              <Link to="/" className="text-gray-600 hover:text-gray-900">
+                Home
+              </Link>
+              <Link to="/shop" className="text-gray-600 hover:text-gray-900">
+                Shop
+              </Link>
+              <Link to="/about" className="text-gray-600 hover:text-gray-900">
+                About
+              </Link>
+              <Link to="/contact" className="text-gray-600 hover:text-gray-900">
+                Contact
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
     </div>
   );
