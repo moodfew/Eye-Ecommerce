@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaHeart } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useCart } from "./CartContext";
 
 interface ClothingItem {
   id: number;
@@ -24,6 +25,7 @@ function Shop(props) {
   const [error, setError] = useState("");
   const [selectedItem, setSelectedItem] = useState<ClothingItem | null>(null);
   const [likedItems, setLikedItems] = useState<Record<number, boolean>>([]);
+  const { addToCart } = useCart();
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -82,6 +84,11 @@ function Shop(props) {
     if (selectedItem) {
       navigate("/checkout", { state: { item: selectedItem } });
     }
+  };
+
+  const handleAddToCart = (item: ClothingItem) => {
+    addToCart(item);
+    notify();
   };
 
   return (
@@ -170,7 +177,7 @@ function Shop(props) {
                         className="my-2 font-semibold rounded-md p-2 bg-blue-200 hover:bg-blue-300"
                         onClick={() => {
                           props.favorite(clothing);
-                          notify();
+                          handleAddToCart(clothing);
                         }}
                       >
                         Add to Cart

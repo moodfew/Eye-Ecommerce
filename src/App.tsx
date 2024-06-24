@@ -7,6 +7,7 @@ import { useState } from "react";
 import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
 import Favorites from "./components/Favorites";
+import { CartProvider } from "./components/CartContext";
 
 function App() {
   const [favorites, setFavorites] = useState([]);
@@ -26,23 +27,27 @@ function App() {
   console.log(shopFavorites);
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/shop"
-          element={<Shop favorite={onFavorite} shopFavorite={onShopFavorite} />}
-        />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/cart" element={<Cart favorites={favorites} />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route
-          path="/favorites"
-          element={<Favorites hearts={shopFavorites} />}
-        />
-      </Routes>
-    </Router>
+    <CartProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/shop"
+            element={
+              <Shop favorite={onFavorite} shopFavorite={onShopFavorite} />
+            }
+          />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/cart" element={<Cart favorites={favorites} />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route
+            path="/favorites"
+            element={<Favorites hearts={shopFavorites} />}
+          />
+        </Routes>
+      </Router>
+    </CartProvider>
   );
 }
 

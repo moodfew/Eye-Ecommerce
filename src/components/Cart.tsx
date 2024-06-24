@@ -31,9 +31,7 @@ function Cart({ favorites }: CartProps) {
   };
 
   const handleProceedToCheckout = () => {
-    if (selectedItem) {
-      navigate("/checkout", { state: { item: selectedItem } });
-    }
+    navigate("/checkout", { state: { item: selectedItem } });
   };
 
   return (
@@ -53,57 +51,67 @@ function Cart({ favorites }: CartProps) {
           </button>
         </div>
       ) : (
-        <div className="mx-auto h-full flex w-full justify-center items-center m-10 p-2 px-12 py-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {favorites.map((clothing) => (
-              <div
-                key={clothing.id}
-                className="relative bg-white border rounded-lg shadow-md dark:border-gray-700 transform transition duration-500 hover:scale-105"
-              >
-                <div className="absolute top-3 right-3 rounded-full bg-violet-600 text-gray-200 w-6 h-6 text-center">
-                  {clothing.id}
-                </div>
-                <div className="p-3 flex justify-center">
-                  <a href="#">
-                    <img
-                      id={`image-${clothing.id}`}
-                      className="rounded-md"
-                      src={clothing.image_url}
-                      loading="lazy"
-                      style={{ maxHeight: "600px" }}
-                    />
-                  </a>
-                </div>
-                <div className="px-4 pb-3">
-                  <div>
+        <>
+          <div className="mx-auto h-full flex w-full justify-center items-center m-10 p-2 px-12 py-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+              {favorites.map((clothing) => (
+                <div
+                  key={clothing.id}
+                  className="relative bg-white border rounded-lg shadow-md dark:border-gray-700 transform transition duration-500 hover:scale-105"
+                >
+                  <div className="absolute top-3 right-3 rounded-full bg-violet-600 text-gray-200 w-6 h-6 text-center">
+                    {clothing.id}
+                  </div>
+                  <div className="p-3 flex justify-center">
                     <a href="#">
-                      <h5 className="text-xl font-semibold tracking-tight hover:text-gray-700 text-gray-600">
-                        {clothing.name} ★★★★{" "}
-                        <p className="font-light inline text-lg">
-                          ({clothing.reviews})
-                        </p>
-                      </h5>
+                      <img
+                        id={`image-${clothing.id}`}
+                        className="rounded-md"
+                        src={clothing.image_url}
+                        loading="lazy"
+                        style={{ maxHeight: "600px" }}
+                      />
                     </a>
-                    <p className="antialiased text-gray-600 dark:text-gray-400 text-sm break-all">
-                      {clothing.description}
-                    </p>
-                    <h5 className="text-xl py-2 font-bold tracking-tight hover:text-gray-700 text-gray-600">
-                      {clothing.price}$
-                    </h5>
-                    <div className="flex justify-between gap-3">
-                      <button
-                        className="my-2 font-semibold rounded-md p-2 bg-orange-200 hover:bg-orange-300"
-                        onClick={() => handleBuyNowClick(clothing)}
-                      >
-                        Buy Now
-                      </button>
+                  </div>
+                  <div className="px-4 pb-3">
+                    <div>
+                      <a href="#">
+                        <h5 className="text-xl font-semibold tracking-tight hover:text-gray-700 text-gray-600">
+                          {clothing.name} ★★★★{" "}
+                          <p className="font-light inline text-lg">
+                            ({clothing.reviews})
+                          </p>
+                        </h5>
+                      </a>
+                      <p className="antialiased text-gray-600 dark:text-gray-400 text-sm break-all">
+                        {clothing.description}
+                      </p>
+                      <h5 className="text-xl py-2 font-bold tracking-tight hover:text-gray-700 text-gray-600">
+                        {clothing.price}$
+                      </h5>
+                      <div className="flex justify-between gap-3">
+                        <button
+                          className="my-2 font-semibold rounded-md p-2 bg-orange-200 hover:bg-orange-300"
+                          onClick={() => handleBuyNowClick(clothing)}
+                        >
+                          Details
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+          <div className="flex justify-center mx-10">
+            <button
+              className="font-semibold text-black-600 hover:text-black-700 text-lg bg-blue-500 hover:bg-blue-600 rounded w-full max-w-screen-lg p-2 py-6"
+              onClick={handleProceedToCheckout}
+            >
+              Proceed to Checkout
+            </button>
+          </div>
+        </>
       )}
       {selectedItem && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -125,10 +133,7 @@ function Cart({ favorites }: CartProps) {
                 <h3 className="text-lg font-bold mb-6">
                   ${selectedItem.price}
                 </h3>
-                <button
-                  className="w-full bg-blue-500 text-white font-semibold py-3 px-6 rounded hover:bg-blue-600"
-                  onClick={handleProceedToCheckout}
-                >
+                <button className="w-full bg-blue-500 text-white font-semibold py-3 px-6 rounded hover:bg-blue-600">
                   Proceed to Checkout
                 </button>
               </div>

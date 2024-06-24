@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { useLocation } from "react-router-dom";
+import { useCart } from "./CartContext";
 
 interface ClothingItem {
   id: number;
@@ -19,11 +20,16 @@ interface CartProps {
 }
 
 function Checkout() {
-  const [checkoutItems, setCheckoutItems] = useState<ClothingItem | null>(null);
+  const [checkoutItems, setCheckoutItems] = useState<ClothingItem[]>([]);
   const location = useLocation();
   const { item } = location.state as CartProps;
+  const { cartItems } = useCart();
 
-  const [checkItems, setCheckItems] = useState([]);
+  useEffect(() => {
+    setCheckoutItems(cartItems);
+  }, [cartItems]);
+
+  const [checkItems, setCheckItems] = useState<ClothingItem[]>([]);
 
   useEffect(() => {
     setCheckItems((prevValues) => {
@@ -46,22 +52,27 @@ function Checkout() {
           <p className="text-gray-400">
             Check your items. And select a suitable shipping method.
           </p>
-          <div className="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
-            <div className="flex flex-col rounded-lg bg-white sm:flex-row">
-              <img
-                className="m-2 h-24 w-30 rounded-md border object-cover object-center"
-                src={item.image_url}
-                alt=""
-              />
-              <div className="flex w-full flex-col px-4 py-4">
-                <span className="font-semibold">{item.name}</span>
-                <span className="float-right text-gray-400">
-                  {item.description}
-                </span>
-                <p className="mt-auto text-lg font-bold">{item.price}$</p>
+          {checkoutItems.map((item) => (
+            <div
+              className="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6"
+              key={item.id}
+            >
+              <div className="flex flex-col rounded-lg bg-white sm:flex-row">
+                <img
+                  className="m-2 h-24 w-30 rounded-md border object-cover object-center"
+                  src={item.image_url}
+                  alt=""
+                />
+                <div className="flex w-full flex-col px-4 py-4">
+                  <span className="font-semibold">{item.name}</span>
+                  <span className="float-right text-gray-400">
+                    {item.description}
+                  </span>
+                  <p className="mt-auto text-lg font-bold">{item.price}$</p>
+                </div>
               </div>
             </div>
-          </div>
+          ))}
 
           <p className="mt-8 text-lg font-medium">Shipping Methods</p>
           <form className="mt-5 grid gap-6">
@@ -71,7 +82,7 @@ function Checkout() {
                 id="radio_1"
                 type="radio"
                 name="radio"
-                checked
+                defaultChecked
               />
               <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
               <label
@@ -97,7 +108,6 @@ function Checkout() {
                 id="radio_2"
                 type="radio"
                 name="radio"
-                checked
               />
               <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
               <label
@@ -182,7 +192,7 @@ function Checkout() {
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"
+                    d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15A2.25 2.25 0 002.25 6.75v10.5A2.25 2.25 0 004.5 19.5z"
                   />
                 </svg>
               </div>
@@ -199,27 +209,22 @@ function Checkout() {
                   type="text"
                   id="card-no"
                   name="card-no"
-                  className="w-full rounded-md border border-gray-200 px-2 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                  className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="xxxx-xxxx-xxxx-xxxx"
                 />
                 <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                   <svg
-                    className="h-4 w-4 text-gray-400"
                     xmlns="http://www.w3.org/2000/svg"
-                    width={16}
-                    height={16}
-                    fill="currentColor"
-                    viewBox="0 0 16 16"
+                    className="h-4 w-4 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
                   >
                     <path
-                      fillRule="evenodd"
-                      d="M12 2a1 1 0 00-1-1H5a1 1 0 00-1 1v11a1 1 0 001 1h6a1 1 0 001-1V2zM4 4v7H2V4a1 1 0 011-1h9a1 1 0 011 1v8a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"
-                      clipRule="evenodd"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      d="M11 5a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-3a.5.5 0 01-.5-.5v-1a.5.5 0 01.5-.5h3z"
-                      clipRule="evenodd"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15A2.25 2.25 0 002.25 6.75v10.5A2.25 2.25 0 004.5 19.5z"
                     />
                   </svg>
                 </div>
@@ -227,13 +232,13 @@ function Checkout() {
               <input
                 type="text"
                 name="credit-expiry"
-                className="w-full rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                className="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                 placeholder="MM/YY"
               />
               <input
                 type="text"
                 name="credit-cvc"
-                className="w-1/6 flex-shrink-0 rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                className="w-1/6 flex-shrink-0 rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                 placeholder="CVC"
               />
             </div>
@@ -255,13 +260,12 @@ function Checkout() {
                 <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                   <img
                     className="h-4 w-4 object-contain"
-                    src="https://flagpack.xyz/_nuxt/4c829b6c0131de7162790d2f897a90fd.svg"
+                    src="/images/IDqEniMLo0rNRuJ0bPz7I.png"
                     alt=""
                   />
                 </div>
               </div>
               <select
-                type="text"
                 name="billing-state"
                 className="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
               >
@@ -275,27 +279,62 @@ function Checkout() {
               />
             </div>
 
-            {/* Total */}
-            <div className="mt-6 border-t border-b py-2">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-gray-900">Subtotal</p>
-                <p className="font-semibold text-gray-900">{item.price}</p>
-              </div>
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-gray-900">Shipping</p>
-                <p className="font-semibold text-gray-900">$8.00</p>
-              </div>
+            <div className="relative">
+              <input
+                className="peer hidden"
+                id="radio_1"
+                type="radio"
+                name="radio"
+                defaultChecked
+              />
+              <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
+              <label
+                className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
+                htmlFor="radio_1"
+              >
+                <img
+                  className="w-14 object-contain"
+                  src="/images/5oCGExL6o38Q3X5VklAvR.png"
+                  alt=""
+                />
+                <div className="ml-5">
+                  <span className="mt-2 font-semibold">Paypal</span>
+                  <p className="text-slate-500 text-sm leading-6">
+                    The safer, easier way to pay
+                  </p>
+                </div>
+              </label>
             </div>
-            <div className="mt-6 flex items-center justify-between">
-              <p className="text-sm font-medium text-gray-900">Total</p>
-              <p className="text-2xl font-semibold text-gray-900">
-                {item.price + 8.0}
-              </p>
+            <div className="relative">
+              <input
+                className="peer hidden"
+                id="radio_2"
+                type="radio"
+                name="radio"
+              />
+              <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
+              <label
+                className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
+                htmlFor="radio_2"
+              >
+                <img
+                  className="w-14 object-contain"
+                  src="/images/IDqEniMLo0rNRuJ0bPz7I.png"
+                  alt=""
+                />
+                <div className="ml-5">
+                  <span className="mt-2 font-semibold">Credit Card</span>
+                  <p className="text-slate-500 text-sm leading-6">
+                    Safe money transfer using your bank accounts. Visa, maestro,
+                    discover, american express.
+                  </p>
+                </div>
+              </label>
             </div>
-            <button className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white">
-              Place Order
-            </button>
           </div>
+          <button className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white">
+            Place Order
+          </button>
         </div>
       </div>
     </div>
