@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { useLocation } from "react-router-dom";
 
@@ -22,6 +22,15 @@ function Checkout() {
   const [checkoutItems, setCheckoutItems] = useState<ClothingItem | null>(null);
   const location = useLocation();
   const { item } = location.state as CartProps;
+
+  const [checkItems, setCheckItems] = useState([]);
+
+  useEffect(() => {
+    setCheckItems((prevValues) => {
+      return [...prevValues, item];
+    });
+    console.log(checkItems);
+  }, [item]);
 
   return (
     <div>

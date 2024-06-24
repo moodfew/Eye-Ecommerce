@@ -39,10 +39,23 @@ function Cart({ favorites }: CartProps) {
   return (
     <>
       <Navbar />
-      <div className="mx-auto h-full flex w-full justify-center items-center m-10 p-2 px-12 py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {favorites.map((clothing) => {
-            return (
+      {favorites.length === 0 ? (
+        <div className="flex flex-col items-center justify-center h-screen">
+          <h2 className="text-2xl font-semibold mb-4">No items in the cart</h2>
+          <p className="text-gray-600 mb-6">
+            It looks like you haven't added any items to your cart yet.
+          </p>
+          <button
+            className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600"
+            onClick={() => navigate("/")}
+          >
+            Continue Shopping
+          </button>
+        </div>
+      ) : (
+        <div className="mx-auto h-full flex w-full justify-center items-center m-10 p-2 px-12 py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {favorites.map((clothing) => (
               <div
                 key={clothing.id}
                 className="relative bg-white border rounded-lg shadow-md dark:border-gray-700 transform transition duration-500 hover:scale-105"
@@ -88,10 +101,10 @@ function Cart({ favorites }: CartProps) {
                   </div>
                 </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       {selectedItem && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white mb-10 rounded-lg shadow-lg p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
