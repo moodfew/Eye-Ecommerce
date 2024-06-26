@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "./Navbar";
+import axios from "axios";
 
 const Contact: React.FC = () => {
   const [contact, setContact] = useState({
@@ -17,19 +18,33 @@ const Contact: React.FC = () => {
     console.log(contact);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Process the form data here (e.g., send it to an API endpoint)
-    console.log("Form submitted:", contact);
-    // Reset the form after submission
-    setContact({
-      email: "",
-      subject: "",
-      message: "",
-    });
-    alert("Your message has been sent!");
-  };
 
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/submit",
+        contact
+      );
+
+      // Handle response status
+      if (response.status === 200) {
+        // Reset the form after successful submission
+        setContact({
+          email: "",
+          subject: "",
+          message: "",
+        });
+
+        alert("Your message has been sent!");
+      } else {
+        throw new Error("Failed to send message");
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      alert("Failed to send message. Please try again later.");
+    }
+  };
   return (
     <>
       <Navbar />
@@ -42,7 +57,7 @@ const Contact: React.FC = () => {
             Got a technical issue? Want to send feedback about a beta feature?
             Need details about our Business plan? Let us know.
           </p>
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form action="" onSubmit={handleSubmit} className="space-y-8">
             <div>
               <label
                 htmlFor="email"

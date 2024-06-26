@@ -82,3 +82,20 @@ VALUES
 69.69, 'men', '/public/menAccessories/FedoraRed.jpg.jpg', 5, 14),
 ('Fedora White', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus velit augue, molestie a sollicitudin bibendum, bibendum nec velit.',
 21, 'men', '/public/menAccessories/FedoraWhite.jpg', 5, 30)
+
+CREATE TABLE contact (
+	id SERIAL PRIMARY KEY,
+	email VARCHAR(55) NOT NULL,
+	subject TEXT NOT NULL,
+	message TEXT
+);
+
+CREATE TABLE users (
+	id SERIAL PRIMARY KEY,
+	email VARCHAR(55) NOT NULL UNIQUE,
+	name VARCHAR(55) NOT NULL,
+	password VARCHAR(255) NOT NULL,
+	billing_address TEXT,
+	shipping_address TEXT,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

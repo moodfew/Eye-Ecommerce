@@ -8,6 +8,8 @@ import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
 import Favorites from "./components/Favorites";
 import { CartProvider } from "./components/CartContext";
+import Register from "./components/Register";
+import Login from "./components/Login";
 
 function App() {
   const [favorites, setFavorites] = useState([]);
@@ -45,6 +47,8 @@ function App() {
             path="/favorites"
             element={<Favorites hearts={shopFavorites} />}
           />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
     </CartProvider>

@@ -54,12 +54,12 @@ function Cart({ favorites }: CartProps) {
         <>
           <div className="mx-auto h-full flex w-full justify-center items-center m-10 p-2 px-12 py-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-              {favorites.map((clothing) => (
+              {favorites.map((clothing, index) => (
                 <div
-                  key={clothing.id}
+                  key={index}
                   className="relative bg-white border rounded-lg shadow-md dark:border-gray-700 transform transition duration-500 hover:scale-105"
                 >
-                  <div className="absolute top-3 right-3 rounded-full bg-violet-600 text-gray-200 w-6 h-6 text-center">
+                  <div className="absolute top-3 right-3 rounded-full text-gray-600 w-6 h-6 text-center">
                     {clothing.id}
                   </div>
                   <div className="p-3 flex justify-center">
@@ -103,9 +103,9 @@ function Cart({ favorites }: CartProps) {
               ))}
             </div>
           </div>
-          <div className="flex justify-center mx-10">
+          <div className="flex justify-center mx-10 my-5">
             <button
-              className="font-semibold text-black-600 hover:text-black-700 text-lg bg-blue-500 hover:bg-blue-600 rounded w-full max-w-screen-lg p-2 py-6"
+              className="h-14 w-full bg-blue-500 text-white font-semibold py-3 px-6 rounded hover:bg-blue-600"
               onClick={handleProceedToCheckout}
             >
               Proceed to Checkout
