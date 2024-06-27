@@ -99,3 +99,27 @@ CREATE TABLE users (
 	shipping_address TEXT,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE orders (
+	id SERIAL PRIMARY KEY,
+	user_id INT NOT NULL,
+	order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	status VARCHAR(55) DEFAULT 'Pending',
+	total_price REAL NOT NULL,
+	billing_address TEXT,
+	shipping_address TEXT,
+	FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE order_items (
+	id SERIAL PRIMARY KEY,
+	order_id INT NOT NULL,
+	product_id INT NOT NULL,
+	product_type VARCHAR(55) NOT NULL,
+	quantity INT NOT NULL DEFAULT 1,
+	price REAL NOT NULL,
+	FOREIGN KEY (order_id) REFERENCES orders(id)
+);
+
+ALTER TABLE orders
+ADD billing_zip VARCHAR(55);

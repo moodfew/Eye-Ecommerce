@@ -87,7 +87,7 @@ app.post(
       if (user.rows.length === 0) {
         return res.status(400).json({ msg: "Invalid credentials" });
       }
-      const isMatch = bcrypt.compare(password, user.rows[0].password);
+      const isMatch = await bcrypt.compare(password, user.rows[0].password);
       if (!isMatch) {
         return res.status(400).json({ msg: "Invalid credentials" });
       }
@@ -128,6 +128,47 @@ const auth = (req, res, next) => {
     return res.status(201).json({ msg: "Token is invalid" });
   }
 };
+
+app.post("/api/order", auth, async (req, res) => {
+  const userId = req.user.id;
+  console.log(userId);
+  const {
+    billingAddress,
+    shippingAddress,
+    billingZip,
+    totalPrice,
+    status,
+    orderItems,
+  } = req.body;
+
+  try {
+    await db.query("BEGIN");
+
+    const orderResult = await db.query(
+      "INSERT INTO orders (user_id, status, total_price, billing_address, shipping_address, billing_zip) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id",
+      [userId, status, totalPrice, billingAddress, shippingAddress, billingZip]
+    );
+
+    const orderId = orderResult.rows[0].id;
+
+    const orderItemsPromises = orderItems.map((item) => {
+      return db.query(
+        "INSERT INTO order_items (order_id, product_id, product_type, quantity, price) VALUES ($1, $2, $3, $4, $5)",
+        [orderId, item.productId, item.productType, 1, totalPrice]
+      );
+    });
+
+    await Promise.all(orderItemsPromises);
+
+    await db.query("COMMIT");
+
+    res.status(201).json({ orderId });
+  } catch (error) {
+    await db.query("ROLLBACK");
+    console.log("Error placing order", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 app.get("/api/protected", auth, (req, res) => {
   res.json({ msg: "Welcome to the protected route", user: req.user });

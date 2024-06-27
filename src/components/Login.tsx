@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import Navbar from "./Navbar";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const { email, password } = formData;
 
@@ -26,11 +28,14 @@ const Login = () => {
       if (res.ok) {
         console.log("User logged in:", data);
         localStorage.setItem("token", data.token);
+        navigate("/");
       } else {
         console.error("Error:", data);
+        navigate("/login");
       }
     } catch (err) {
       console.error(err);
+      navigate("/login");
     }
   };
 

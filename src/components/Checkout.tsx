@@ -47,6 +47,40 @@ function Checkout() {
     e.preventDefault();
     console.log(contact);
     console.log(checkoutItems);
+
+    const orderData = {
+      billingAddress: contact.billingAddress,
+      shippingAddress: contact.billingAddress,
+      billingZip: contact.billingZip,
+      totalPrice: checkoutItems.reduce((acc, item) => acc + item.price, 0),
+      status: "Pending",
+      orderItems: checkoutItems.map((item) => ({
+        productId: item.id,
+        productType: item.category,
+        quantity: 1,
+        price: item.price,
+      })),
+    };
+
+    try {
+      const response = await fetch("http://localhost:3000/api/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozfSwiaWF0IjoxNzE5NDc1NzY4LCJleHAiOjE3MTk0NzkzNjh9.4AYBfVYjKE7i7dDjgk3N2G7IRP9RHgilvINfjdtKE84",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (response.ok) {
+        console.log("Order placed successfully");
+      } else {
+        console.error("Error placing order");
+      }
+    } catch (error) {
+      console.log("Error placing order:", error);
+    }
   };
 
   useEffect(() => {
@@ -149,6 +183,7 @@ function Checkout() {
                   value={contact.email}
                   className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="your.email@gmail.com"
+                  required
                 />
                 <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                   <svg
@@ -183,6 +218,7 @@ function Checkout() {
                   value={contact.cardHolder}
                   className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm uppercase shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="Your full name here"
+                  required
                 />
                 <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                   <svg
@@ -217,6 +253,7 @@ function Checkout() {
                     value={contact.cardNo}
                     className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                     placeholder="xxxx-xxxx-xxxx-xxxx"
+                    required
                   />
                   <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                     <svg
@@ -242,6 +279,7 @@ function Checkout() {
                   value={contact.creditExpiry}
                   className="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="MM/YY"
+                  required
                 />
                 <input
                   type="text"
@@ -250,6 +288,7 @@ function Checkout() {
                   onChange={handleChange}
                   className="w-1/6 flex-shrink-0 rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="CVC"
+                  required
                 />
               </div>
               <label
@@ -268,6 +307,7 @@ function Checkout() {
                     onChange={handleChange}
                     className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                     placeholder="Street Address"
+                    required
                   />
                   <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                     <img
@@ -290,6 +330,7 @@ function Checkout() {
                   onChange={handleChange}
                   className="flex-shrink-0 rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none sm:w-1/6 focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="ZIP"
+                  required
                 />
               </div>
 
