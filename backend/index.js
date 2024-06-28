@@ -193,6 +193,22 @@ app.post("/api/order", auth, async (req, res) => {
   }
 });
 
+// Example route to fetch order history
+app.get("/api/orders", auth, async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const orders = await db.query(
+      "SELECT * FROM orders WHERE user_id = $1 ORDER BY id DESC",
+      [userId]
+    );
+    res.json(orders.rows);
+  } catch (error) {
+    console.log("Error fetching order history", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.get("/api/search", async (req, res) => {
   const { q } = req.query;
 

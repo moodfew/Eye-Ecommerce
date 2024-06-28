@@ -10,6 +10,7 @@ import Favorites from "./components/Favorites";
 import { CartProvider } from "./components/CartContext";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import OrderHistory from "./components/OrderHistory";
 
 function App() {
   const [favorites, setFavorites] = useState([]);
@@ -49,6 +50,7 @@ function App() {
           />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/orderHistory" element={<OrderHistory />} />
         </Routes>
       </Router>
     </CartProvider>

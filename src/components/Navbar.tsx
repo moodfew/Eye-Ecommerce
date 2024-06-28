@@ -39,15 +39,15 @@ const Navbar = () => {
               Contact
             </Link>
             <Link
-              to="/login"
-              className="text-gray-600 hover:text-gray-900 rounded-md"
+              to="/orderHistory"
+              className="text-gray-600 hover:text-gray-900"
             >
+              Orders
+            </Link>
+            <Link to="/login" className="text-gray-600 hover:text-gray-900">
               Login
             </Link>
-            <Link
-              to="/register"
-              className="text-gray-600 hover:text-gray-900 py-2 px-4 rounded-md"
-            >
+            <Link to="/register" className="text-gray-600 hover:text-gray-900">
               Register
             </Link>
           </div>
