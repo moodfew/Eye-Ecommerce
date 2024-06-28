@@ -177,24 +177,21 @@ const ClothingItemCard = ({
       </button>
     </div>
     <div className="p-3 flex justify-center">
-      <a href="#">
-        <img
-          id={`image-${clothing.id}`}
-          className="rounded-md"
-          src={clothing.image_url}
-          loading="lazy"
-          style={{ maxHeight: "600px" }}
-        />
-      </a>
+      <img
+        id={`image-${clothing.id}`}
+        className="rounded-md"
+        src={clothing.image_url}
+        loading="lazy"
+        style={{ maxHeight: "600px" }}
+      />
     </div>
     <div className="px-4 pb-3">
       <div>
-        <a href="#">
-          <h5 className="text-xl font-semibold tracking-tight hover:text-gray-700 text-gray-600">
-            {clothing.name} ★★★★{" "}
-            <p className="font-light inline text-lg">({clothing.reviews})</p>
-          </h5>
-        </a>
+        <h5 className="text-xl font-semibold tracking-tight hover:text-gray-700 text-gray-600">
+          {clothing.name} ★★★★{" "}
+          <p className="font-light inline text-lg">({clothing.reviews})</p>
+        </h5>
+
         <p className="antialiased text-gray-600 dark:text-gray-400 text-sm break-all">
           {clothing.description}
         </p>
