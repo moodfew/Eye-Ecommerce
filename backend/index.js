@@ -6,6 +6,8 @@ import cors from "cors";
 import bcrypt from "bcryptjs";
 import { check, validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
+import { writeFile } from "fs/promises";
+import { write } from "fs";
 
 dotenv.config();
 
@@ -24,6 +26,17 @@ const db = new pg.Client({
 });
 
 db.connect();
+
+const fileName = "token.txt";
+
+async function writeTokenToFile(token) {
+  try {
+    await writeFile(fileName, token);
+    console.log(`Token has been written to "${fileName}" successfully.`);
+  } catch (error) {
+    console.error(`Error writing token to "${fileName}":`, error);
+  }
+}
 
 app.post(
   "/api/register",
@@ -104,7 +117,8 @@ app.post(
         { expiresIn: "1h" },
         (err, token) => {
           if (err) throw err;
-          res.json({ token });
+          res.json({ token }); //
+          writeTokenToFile(token);
         }
       );
     } catch (err) {
@@ -166,6 +180,30 @@ app.post("/api/order", auth, async (req, res) => {
   } catch (error) {
     await db.query("ROLLBACK");
     console.log("Error placing order", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/api/search", async (req, res) => {
+  const { q } = req.query;
+
+  if (!q) {
+    return res.status(400).json({ error: "No search query provided" });
+  }
+
+  try {
+    const searchQuery = `
+      SELECT id, name, description, price, category, image_url, rating, reviews, stock_quantity FROM men
+      WHERE name ILIKE $1 OR description ILIKE $1
+      UNION
+      SELECT id, name, description, price, category, image_url, rating, reviews, stock_quantity FROM accessories
+      WHERE name ILIKE $1 OR description ILIKE $1
+    `;
+    const values = [`%${q}%`];
+    const result = await db.query(searchQuery, values);
+    res.json(result.rows);
+  } catch (error) {
+    console.log("Error executing search query", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

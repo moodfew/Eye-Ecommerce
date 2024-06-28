@@ -35,6 +35,7 @@ const Shop = (props: ShopProps) => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const category = searchParams.get("category") || "men";
+  const searchQuery = searchParams.get("search") || "";
   const [currentCategory, setCurrentCategory] = useState(category);
 
   const navigate = useNavigate();
@@ -45,10 +46,11 @@ const Shop = (props: ShopProps) => {
       setLoading(true);
       setError("");
       try {
-        const response = await axios.get(
-          `http://localhost:3000/${currentCategory}`
-        );
+        const response = searchQuery
+          ? await axios.get(`http://localhost:3000/api/search?q=${searchQuery}`)
+          : await axios.get(`http://localhost:3000/${currentCategory}`);
         setClothingItems(response.data);
+        console.log(response.data);
       } catch (err) {
         setError(`Failed to fetch ${currentCategory} clothing`);
       } finally {
@@ -56,10 +58,7 @@ const Shop = (props: ShopProps) => {
       }
     };
     fetchData();
-  }, [currentCategory]);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  }, [currentCategory, searchQuery]);
 
   const handleBuyNowClick = (item: ClothingItem) => {
     setSelectedItem(item);
@@ -78,11 +77,13 @@ const Shop = (props: ShopProps) => {
 
   const toggleCategory = (category: string) => {
     setCurrentCategory(category);
+    navigate(`/shop?category=${category}`);
   };
 
   const handleProceedToCheckout = () => {
     if (selectedItem) {
-      navigate("/checkout", { state: { item: selectedItem } });
+      addToCart(selectedItem);
+      navigate("/checkout");
     }
   };
 
@@ -90,6 +91,9 @@ const Shop = (props: ShopProps) => {
     addToCart(item);
     notify();
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <>
@@ -221,35 +225,36 @@ const ClothingItemCard = ({
 
 const Modal = ({ selectedItem, handleCloseModal, handleProceedToCheckout }) => (
   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-    <div className="bg-white mb-10 rounded-lg shadow-lg p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-      <div className="flex justify-end">
-        <button
-          className="text-gray-600 hover:text-gray-900 text-3xl"
-          onClick={handleCloseModal}
-        >
-          &times;
+    <div className="bg-white mb-10 rounded-lg shadow-lg p-6 max-w-lg">
+      <div className="text-right">
+        <button onClick={handleCloseModal} className="text-gray-500">
+          Close
         </button>
       </div>
-      <div className="flex flex-col md:flex-row">
-        <div className="md:flex-1 pr-8">
-          <h2 className="text-2xl font-semibold mb-4">{selectedItem.name}</h2>
-          <p className="text-gray-600 mb-6">{selectedItem.description}</p>
-          <h3 className="text-lg font-bold mb-6">${selectedItem.price}</h3>
-          <button
-            className="w-full bg-blue-500 text-white font-semibold py-3 px-6 rounded hover:bg-blue-600"
-            onClick={handleProceedToCheckout}
-          >
-            Proceed to Checkout
-          </button>
-        </div>
-        <div className="md:flex-shrink-0 mt-6 md:mt-0 sm:justify-self-center">
-          <img
-            src={selectedItem.image_url}
-            alt={selectedItem.name}
-            className="rounded-md"
-            style={{ maxHeight: "400px", width: "auto" }}
-          />
-        </div>
+      <h2 className="text-xl font-bold mb-4">{selectedItem.name}</h2>
+      <img
+        src={selectedItem.image_url}
+        alt={selectedItem.name}
+        className="mb-4"
+      />
+      <p>{selectedItem.description}</p>
+      <p className="font-bold text-lg">${selectedItem.price}</p>
+      <div className="mt-4 flex justify-between gap-3">
+        <button
+          className="my-2 font-semibold rounded-md p-2 bg-orange-200 hover:bg-orange-300"
+          onClick={handleProceedToCheckout}
+        >
+          Proceed to Checkout
+        </button>
+        <button
+          className="my-2 font-semibold rounded-md p-2 bg-blue-200 hover:bg-blue-300"
+          onClick={() => {
+            handleAddToCart(selectedItem);
+            handleCloseModal();
+          }}
+        >
+          Add to Cart
+        </button>
       </div>
     </div>
   </div>

@@ -1,12 +1,21 @@
 import { useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-function Navbar() {
+const Navbar = () => {
+  const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery) {
+      navigate(`/shop?search=${searchQuery}`);
+    }
   };
 
   return (
@@ -30,6 +39,22 @@ function Navbar() {
               Contact
             </Link>
           </div>
+          {/* recently added */}
+          <form onSubmit={handleSearch} className="flex items-center">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="py-2 px-4 mr-2 border border-gray-300 focus:outline-none rounded-md"
+            />
+            <button
+              type="submit"
+              className="py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+            >
+              Search
+            </button>
+          </form>
           <div className="cart space-x-4">
             <Link to="/cart" className="text-gray-600 hover:text-gray-900">
               <FaShoppingCart size={24} />
@@ -77,6 +102,6 @@ function Navbar() {
       </nav>
     </div>
   );
-}
+};
 
 export default Navbar;
