@@ -22,7 +22,7 @@ const Banner = () => {
         <img
           src={mainImage}
           alt="Main Slide"
-          className="w-full h-64 sm:h-80 md:h-96 lg:h-[70vh] object-cover"
+          className="w-full h-99 sm:h-99 md:h-[70vh] lg:h-[70vh] object-cover"
         />
         <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center text-white p-4">
           <h2 className="text-2xl md:text-4xl font-bold mb-4 text-center">
@@ -48,7 +48,7 @@ const Banner = () => {
           <img
             src={menImage}
             alt="Men's Collection"
-            className="w-full h-48 sm:h-64 md:h-80 object-cover"
+            className="w-full h-64 sm:h-64 md:h-82 object-cover"
           />
           <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center text-white p-4">
             <h2 className="text-xl md:text-2xl font-bold mb-2 text-center">
@@ -68,7 +68,7 @@ const Banner = () => {
           <img
             src={accessoriesImage}
             alt="Accessories"
-            className="w-full h-48 sm:h-64 md:h-80 object-cover"
+            className="w-full h-64 sm:h-64 md:h-82 object-cover"
           />
           <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center text-white p-4">
             <h2 className="text-xl md:text-2xl font-bold mb-2 text-center">

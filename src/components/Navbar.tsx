@@ -25,7 +25,7 @@ const Navbar = () => {
           <div className="text-2xl font-bold">
             <Link to="/">E-store</Link>
           </div>
-          <div className="hidden md:flex space-x-6">
+          <div className="hidden md:flex space-x-6 items-center">
             <Link to="/" className="text-gray-600 hover:text-gray-900">
               Home
             </Link>
@@ -38,8 +38,19 @@ const Navbar = () => {
             <Link to="/contact" className="text-gray-600 hover:text-gray-900">
               Contact
             </Link>
+            <Link
+              to="/login"
+              className="text-gray-600 hover:text-gray-900 rounded-md"
+            >
+              Login
+            </Link>
+            <Link
+              to="/register"
+              className="text-gray-600 hover:text-gray-900 py-2 px-4 rounded-md"
+            >
+              Register
+            </Link>
           </div>
-          {/* recently added */}
           <form onSubmit={handleSearch} className="flex items-center">
             <input
               type="text"
@@ -55,12 +66,12 @@ const Navbar = () => {
               Search
             </button>
           </form>
-          <div className="cart space-x-4">
+          <div className="cart hidden lg:block space-x-4">
             <Link to="/cart" className="text-gray-600 hover:text-gray-900">
               <FaShoppingCart size={24} />
             </Link>
           </div>
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <button
               onClick={toggleMobileMenu}
               className="text-gray-600 focus:outline-none focus:text-gray-900"
@@ -95,6 +106,9 @@ const Navbar = () => {
               </Link>
               <Link to="/contact" className="text-gray-600 hover:text-gray-900">
                 Contact
+              </Link>
+              <Link to="/cart" className="text-gray-600 hover:text-gray-900">
+                Cart
               </Link>
             </div>
           </div>
