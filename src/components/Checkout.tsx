@@ -19,6 +19,20 @@ function Checkout() {
   const [checkoutItems, setCheckoutItems] = useState<ClothingItem[]>([]);
   const { cartItems } = useCart();
   const navigate = useNavigate();
+  const [token, setToken] = useState<string | null>("");
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/token");
+        const data = await response.json();
+        setToken(data.token);
+      } catch (error) {
+        console.log("Error fetching token:", error);
+      }
+    };
+    fetchToken();
+  }, []);
 
   const [contact, setContact] = useState({
     email: "",
@@ -41,6 +55,11 @@ function Checkout() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!token) {
+      console.error("No token available!");
+      return;
+    }
+
     const orderData = {
       billingAddress: contact.billingAddress,
       shippingAddress: contact.billingAddress,
@@ -60,7 +79,7 @@ function Checkout() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-auth-token": "your-auth-token-here",
+          "x-auth-token": token,
         },
         body: JSON.stringify(orderData),
       });
@@ -132,7 +151,11 @@ function Checkout() {
                 className="mb-5 peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
                 htmlFor="radio_1"
               >
-                <img className="w-14 object-contain" src="" alt="" />
+                <img
+                  className="w-14 object-contain"
+                  src="https://fedex-dims.brightspotgocdn.com/dims4/default/b70400e/2147483647/strip/true/crop/600x338+0+31/resize/1000x563!/quality/90/?url=https%3A%2F%2Ffedex-static.brightspotgocdn.com%2F3e%2Ff9%2Fc07dce373c19124d37fe12ae852e%2Flogo-corporate-600x400.jpg"
+                  alt=""
+                />
                 <div className="ml-5">
                   <span className="mt-2 font-semibold">Fedex Delivery</span>
                   <p className="text-slate-500 text-sm leading-6">
@@ -237,17 +260,17 @@ function Checkout() {
                   />
                   <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                     <svg
-                      className="h-4 w-4 text-gray-400"
                       xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 text-gray-400"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
-                      strokeWidth="2"
+                      strokeWidth={2}
                     >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        d="M15 12H9m0 0H8m1 0h2m4 0a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                        d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15A2.25 2.25 0 002.25 6.75v10.5A2.25 2.25 0 004.5 19.5z"
                       />
                     </svg>
                   </div>
@@ -257,16 +280,16 @@ function Checkout() {
                   name="creditExpiry"
                   onChange={handleChange}
                   value={contact.creditExpiry}
-                  className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                  className="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="MM/YY"
                   required
                 />
                 <input
                   type="text"
                   name="creditCvc"
-                  onChange={handleChange}
                   value={contact.creditCvc}
-                  className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                  onChange={handleChange}
+                  className="w-1/6 flex-shrink-0 rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="CVC"
                   required
                 />
@@ -277,26 +300,77 @@ function Checkout() {
               >
                 Billing Address
               </label>
-
-              <div className="relative">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="relative flex-shrink-0 sm:w-7/12 ">
+                  <input
+                    type="text"
+                    id="billing-address"
+                    name="billingAddress"
+                    value={contact.billingAddress}
+                    onChange={handleChange}
+                    className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                    placeholder="Street Address"
+                    required
+                  />
+                  <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
+                    <img
+                      className="h-4 w-4 object-contain"
+                      src="/images/IDqEniMLo0rNRuJ0bPz7I.png"
+                      alt=""
+                    />
+                  </div>
+                </div>
+                <select
+                  name="billing-state"
+                  className="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                >
+                  <option value="State">State</option>
+                </select>
                 <input
                   type="text"
-                  id="billing-zip"
                   name="billingZip"
-                  onChange={handleChange}
                   value={contact.billingZip}
-                  className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                  onChange={handleChange}
+                  className="flex-shrink-0 rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none sm:w-1/6 focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="ZIP"
                   required
                 />
               </div>
-              <button
-                type="submit"
-                className="mt-6 w-full rounded-md bg-blue-500 py-3 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-              >
-                Place Order
-              </button>
+
+              <div className="relative my-4">
+                <input
+                  className="peer hidden"
+                  id="radio_1"
+                  type="radio"
+                  name="radio"
+                  defaultChecked
+                />
+                <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
+                <label
+                  className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
+                  htmlFor="radio_1"
+                >
+                  <img
+                    className="w-14 object-contain"
+                    src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Paypal_2014_logo.png"
+                    alt=""
+                  />
+                  <div className="ml-5 flex flex-col justify-center">
+                    <span className="font-semibold">Paypal</span>
+                    <p className="text-slate-500 text-sm leading-6">
+                      Safe money transfer using your bank accounts. Visa,
+                      maestro, discover, american express.
+                    </p>
+                  </div>
+                </label>
+              </div>
             </div>
+            <button
+              type="submit"
+              className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
+            >
+              Place Order
+            </button>
           </div>
         </div>
       </form>

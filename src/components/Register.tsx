@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "./Navbar";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +8,7 @@ const Register = () => {
     name: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const { email, name, password } = formData;
 
@@ -26,8 +28,10 @@ const Register = () => {
       const data = await res.json();
       if (res.ok) {
         console.log("User registered:", data);
+        navigate("/login");
       } else {
         console.error("Error:", data);
+        navigate("/register");
       }
     } catch (err) {
       console.error(err);

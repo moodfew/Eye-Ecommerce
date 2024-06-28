@@ -6,8 +6,7 @@ import cors from "cors";
 import bcrypt from "bcryptjs";
 import { check, validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
-import { writeFile } from "fs/promises";
-import { write } from "fs";
+import { writeFile, readFile } from "fs/promises";
 
 dotenv.config();
 
@@ -127,6 +126,16 @@ app.post(
     }
   }
 );
+
+app.get("/api/token", async (req, res) => {
+  try {
+    const token = await readFile("token.txt", "utf8");
+    res.json({ token });
+  } catch (error) {
+    console.error("Error reading token:", error);
+    res.status(500).json({ error: "Failed to read token" });
+  }
+});
 
 const auth = (req, res, next) => {
   const token = req.header("x-auth-token");
