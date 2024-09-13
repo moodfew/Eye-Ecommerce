@@ -16,12 +16,18 @@ const port = process.env.SERVER_PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+console.log('DB User:', process.env.USER);
+console.log('DB Host:', process.env.HOST);
+console.log('DB Name:', process.env.DATABASE);
+console.log('DB Port:', process.env.DB_PORT);
+console.log('DB Port:', process.env.PASSWORD);
+
 const db = new pg.Client({
-  user: process.env.USER,
-  host: process.env.HOST,
-  database: process.env.DATABASE,
-  password: process.env.PASSWORD,
-  port: process.env.DB_PORT || 5432,
+  user: 'postgres',
+  host: 'localhost',
+  database: 'Clothing-Ecommerce',
+  password: 'post123gres',
+  port: 5432
 });
 
 db.connect();
