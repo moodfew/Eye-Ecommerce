@@ -25,12 +25,14 @@ const OrderHistory = () => {
   useEffect(() => {
     const fetchOrderHistory = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/orders", {
-          headers: {
-            "x-auth-token": token, // Assuming you store token in localStorage
-          },
-        });
-        setOrders(response.data);
+        if (token) {
+          const response = await axios.get("http://localhost:3000/api/orders", {
+            headers: {
+              "x-auth-token": token, // Assuming you store token in localStorage
+            },
+          });
+          setOrders(response.data);
+        }
       } catch (error) {
         console.error("Error fetching order history:", error);
       }
@@ -45,14 +47,30 @@ const OrderHistory = () => {
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h2 className="text-2xl font-bold mb-4">Order History</h2>
         <div className="space-y-4">
-          {orders.map((order) => (
-            <div key={order.id} className="bg-white shadow-md p-4 rounded-lg">
-              <h3 className="text-lg font-semibold">Order ID: {order.id}</h3>
-              <p>Total Price: ${order.total_price}</p>
-              <p>Status: {order.status}</p>
-              {/* Additional order details can be displayed here */}
+          {Array.isArray(orders) && orders.length > 0 ? ( // Check if orders is an array
+            orders.map((order) => (
+              <div key={order.id} className="bg-white shadow-md p-4 rounded-lg">
+                <h3 className="text-lg font-semibold">Order ID: {order.id}</h3>
+                <p>Total Price: ${order.total_price}</p>
+                <p>Status: {order.status}</p>
+              </div>
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center h-screen">
+              <h2 className="text-2xl font-semibold mb-4">
+                No items in the cart
+              </h2>
+              <p className="text-gray-600 mb-6">
+                It looks like you haven't added any items to your cart yet.
+              </p>
+              <button
+                className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600"
+                onClick={() => navigate("/")}
+              >
+                Continue Shopping
+              </button>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>

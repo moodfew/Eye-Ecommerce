@@ -136,7 +136,7 @@ function Checkout() {
               </div>
             ))}
 
-            <p className="mt-8 text-lg font-medium">Shipping Methods</p>
+            <p className="mt-8 text-lg mb-4 font-medium">Shipping Methods</p>
 
             <div className="relative">
               <label
@@ -307,17 +307,12 @@ function Checkout() {
                   <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                     <img
                       className="h-4 w-4 object-contain"
-                      src="/images/IDqEniMLo0rNRuJ0bPz7I.png"
+                      src="/public/placeholder.png"
                       alt=""
                     />
                   </div>
                 </div>
-                <select
-                  name="billing-state"
-                  className="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                >
-                  <option value="State">State</option>
-                </select>
+
                 <input
                   type="text"
                   name="billingZip"

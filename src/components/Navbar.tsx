@@ -23,7 +23,9 @@ const Navbar = () => {
       <nav className="bg-white shadow-md">
         <div className="container px-4 py-4 flex justify-between items-center mx-auto">
           <div className="text-2xl font-bold">
-            <Link to="/">E-store</Link>
+            <Link to="/">
+              <img src="/public/ecommerce.png" width={25} alt="" />
+            </Link>
           </div>
           <div className="hidden md:flex space-x-6 items-center">
             <Link to="/" className="text-gray-600 hover:text-gray-900">
@@ -57,11 +59,11 @@ const Navbar = () => {
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="py-2 px-4 mr-2 border border-gray-300 focus:outline-none rounded-md"
+              className="py-1 w-32 px-4 mr-1 border border-gray-300 focus:outline-none rounded-md"
             />
             <button
               type="submit"
-              className="py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+              className="py-1 px-3 mr-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
             >
               Search
             </button>

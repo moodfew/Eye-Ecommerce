@@ -51,7 +51,9 @@ const Shop = (props: ShopProps) => {
           : await axios.get(`http://localhost:3000/${currentCategory}`);
         setClothingItems(response.data);
         console.log(response.data);
+        setClothingItems(Array.isArray(response.data) ? response.data : []);
       } catch (err) {
+        console.error("Error fetching the data, ", err);
         setError(`Failed to fetch ${currentCategory} clothing`);
       } finally {
         setLoading(false);
@@ -124,6 +126,7 @@ const Shop = (props: ShopProps) => {
           selectedItem={selectedItem}
           handleCloseModal={handleCloseModal}
           handleProceedToCheckout={handleProceedToCheckout}
+          handleAddToCart={handleAddToCart}
         />
       )}
     </>
@@ -220,9 +223,14 @@ const ClothingItemCard = ({
   </div>
 );
 
-const Modal = ({ selectedItem, handleCloseModal, handleProceedToCheckout }) => (
+const Modal = ({
+  selectedItem,
+  handleCloseModal,
+  handleProceedToCheckout,
+  handleAddToCart,
+}) => (
   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-    <div className="bg-white mb-10 rounded-lg shadow-lg p-6 max-w-lg">
+    <div className="m-10 bg-white mb-10 rounded-lg shadow-lg p-6 max-w-lg max-h-screen overflow-y-auto">
       <div className="text-right">
         <button onClick={handleCloseModal} className="text-gray-500">
           Close
